@@ -1,4 +1,4 @@
-# Spring-JDBCTemplate
+# Spring - JdbcTemplate
 
 ## Query - Read values from one column & multiple rows
 
