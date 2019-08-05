@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS EMPLOYEE
+        (
+        ID NUMBER(10) NOT NULL,
+        NAME VARCHAR2(50) NOT NULL,
+        );
