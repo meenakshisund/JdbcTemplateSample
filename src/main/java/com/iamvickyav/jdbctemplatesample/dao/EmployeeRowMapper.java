@@ -1,6 +1,6 @@
 package com.iamvickyav.jdbctemplatesample.dao;
 
-import com.iamvickyav.jdbctemplatesample.Employee;
+import com.iamvickyav.jdbctemplatesample.model.Employee;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

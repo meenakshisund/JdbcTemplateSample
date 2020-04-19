@@ -1,17 +1,17 @@
 package com.iamvickyav.jdbctemplatesample.dao;
 
-import com.iamvickyav.jdbctemplatesample.Employee;
+import com.iamvickyav.jdbctemplatesample.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.ResultSet;
 import java.util.List;
 
-@Component
+@Repository
 public class EmployeeDaoImpl implements EmployeeDao {
 
     @Autowired
@@ -39,26 +39,28 @@ public class EmployeeDaoImpl implements EmployeeDao {
         Object[] arr = new Object[]{id, name};
 
         try {
-            return jdbcTemplate.queryForObject(sql, arr, new EmployeeRowMapper());
+            // Using RowMapper
+            Employee emp = jdbcTemplate.queryForObject(sql, arr, new EmployeeRowMapper());
+
+            // Using lambda
+            return jdbcTemplate.queryForObject(sql, arr, (ResultSet resultSet, int rowNum) -> {
+                Employee employee = new Employee();
+                employee.setId(resultSet.getInt("ID"));
+                employee.setName(resultSet.getString("NAME"));
+                return employee;
+            });
+
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
-    @Transactional(rollbackFor = {DataAccessException.class})
-    public boolean deleteEmployees(Integer id1, Integer id2) {
-        String sql = "DELETE FROM EMPLOYEE WHERE ID = ?";
-        Object[] arr1 = new Object[]{id1};
-        Object[] arr2 = new Object[]{"hello"};
-
-        try {
-            int deleteOne = jdbcTemplate.update(sql, arr1);
-            int deleteTwo = jdbcTemplate.update(sql, arr2);
-            if (deleteOne > 0 && deleteTwo > 0)
-                return true;
-        } catch (DataAccessException e) {
-            throw e;
+    @Transactional
+    public boolean deleteEmployees(Object...args) {
+        String sql = "delete from EMPLOYEE where id=?";
+        for (Object o : args) {
+            jdbcTemplate.update(sql, o);
         }
-        return false;
+        return true;
     }
 }

@@ -1,6 +1,6 @@
 package com.iamvickyav.jdbctemplatesample.dao;
 
-import com.iamvickyav.jdbctemplatesample.Employee;
+import com.iamvickyav.jdbctemplatesample.model.Employee;
 
 import java.util.List;
 
@@ -16,5 +16,5 @@ public interface EmployeeDao {
 
     Employee getEmployeeById(Integer id, String name);
 
-    public boolean deleteEmployees(Integer id1, Integer id2);
+    public boolean deleteEmployees(Object...args);
 }

@@ -1,4 +1,4 @@
-package com.iamvickyav.jdbctemplatesample;
+package com.iamvickyav.jdbctemplatesample.model;
 
 public class Employee {
 
