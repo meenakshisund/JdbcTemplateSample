@@ -1,9 +1,11 @@
 package com.iamvickyav.jdbctemplatesample;
 
 import com.iamvickyav.jdbctemplatesample.dao.EmployeeDao;
+import com.iamvickyav.jdbctemplatesample.dao.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -12,30 +14,38 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired
-    EmployeeDao dao;
+    EmployeeDao employeeDao;
 
-    @RequestMapping("/one/{id}")
-    Employee getAnEmployee(@PathVariable Integer id) {
-        return dao.getEmployeeById(id);
+    @Autowired
+    EmployeeService employeeService;
+
+    @RequestMapping("/one/{id}/{name}")
+    Employee getAnEmployee(@PathVariable Integer id, @PathVariable String name) {
+        return employeeDao.getEmployeeById(id, name);
     }
 
     @RequestMapping("/all")
     List<Employee> getAllEmployee() {
-        return dao.getAllEmployees();
+        return employeeDao.getAllEmployees();
     }
 
     @RequestMapping("/all/bean")
     List<Employee> getAllEmployeeUsingBean() {
-        return dao.getAllEmployeesUsingBean();
+        return employeeDao.getAllEmployeesUsingBean();
     }
 
     @RequestMapping("/all/id")
     List<Integer> getAllIds() {
-       return dao.getListOfIds();
+       return employeeDao.getListOfIds();
     }
 
     @RequestMapping("/all/name")
     List<String> getAllNames() {
-        return dao.getListOfNames();
+        return employeeDao.getListOfNames();
+    }
+
+    @RequestMapping(value = "/one/{id1}/{id2}", method = RequestMethod.DELETE)
+    boolean deleteEmployees(@PathVariable Integer id1, @PathVariable Integer id2) {
+        return employeeService.deleteEmployees(id1, id2);
     }
 }
