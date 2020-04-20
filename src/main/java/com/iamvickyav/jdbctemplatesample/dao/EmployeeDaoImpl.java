@@ -57,10 +57,19 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     @Transactional
     public boolean deleteEmployees(Object...args) {
-        String sql = "delete from EMPLOYEE where id=?";
-        for (Object o : args) {
-            jdbcTemplate.update(sql, o);
-        }
+        deleteOne(args);
+        insert();
         return true;
+    }
+
+    private void deleteOne(Object...args){
+        String sql = "delete from EMPLOYEE where id=?";
+        for (Object arg : args) {
+            jdbcTemplate.update(sql, arg);
+        }
+    }
+
+    private void insert() {
+        jdbcTemplate.update("insert into EMPLOYEE(ID,NAME) values(?,?)", 1, "SACHIN");
     }
 }
